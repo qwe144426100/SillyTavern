@@ -663,7 +663,7 @@ export class ToolManager {
             const parameters = toolCall.function.arguments;
             const name = toolCall.function.name;
             const displayName = ToolManager.getDisplayName(name);
-
+            const isStealth = ToolManager.isStealthTool(name);
             const message = await ToolManager.formatToolCallMessage(name, parameters);
             const toast = message && toastr.info(message, 'Tool Calling', { timeOut: 0 });
             const toolResult = await ToolManager.invokeFunctionTool(name, parameters);
@@ -677,7 +677,6 @@ export class ToolManager {
             }
 
             // Don't save stealth tool invocations
-            const isStealth = ToolManager.isStealthTool(name);
             if (isStealth) {
                 result.stealthCalls.push(name);
                 continue;
