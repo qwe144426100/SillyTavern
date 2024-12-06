@@ -4540,7 +4540,9 @@ export async function Generate(type, { automatic_trigger, force_name2, quiet_pro
                 const invocationResult = await ToolManager.invokeFunctionTools(streamingProcessor.toolCalls);
                 if (hasToolCalls) {
                     if (!invocationResult.invocations.length && shouldDeleteMessage) {
-                        ToolManager.showToolCallError(invocationResult.errors);
+                        if (Array.isArray(invocationResult.errors) && invocationResult.errors.length) {
+                            ToolManager.showToolCallError(invocationResult.errors);
+                        }
                         unblockGeneration(type);
                         generatedPromptCache = '';
                         streamingProcessor = null;
@@ -4642,7 +4644,9 @@ export async function Generate(type, { automatic_trigger, force_name2, quiet_pro
             const invocationResult = await ToolManager.invokeFunctionTools(data);
             if (hasToolCalls) {
                 if (!invocationResult.invocations.length && shouldDeleteMessage) {
-                    ToolManager.showToolCallError(invocationResult.errors);
+                    if (Array.isArray(invocationResult.errors) && invocationResult.errors.length) {
+                        ToolManager.showToolCallError(invocationResult.errors);
+                    }
                     unblockGeneration(type);
                     generatedPromptCache = '';
                     return;
